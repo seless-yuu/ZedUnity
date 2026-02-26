@@ -1,0 +1,33 @@
+{
+  // This file is loaded by Zed as a fallback debug configuration.
+  // Copy it to your Unity project root's .vscode/ directory (or .zed/ for Zed-native config).
+  //
+  // Prerequisites (Unity debugging):
+  //   1. Install the unity-debug DAP adapter:
+  //        npm install -g unity-debug
+  //      OR download from:
+  //        https://github.com/Unity-Technologies/vscode-unity-debug/releases
+  //   2. Set UNITY_DEBUG_ADAPTER_PATH in your environment if the adapter is not on PATH.
+  //   3. In Unity: Edit → Preferences → External Tools → check "Editor Attaching"
+  //
+  // See docs/setup-guide.md for full instructions.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Attach to a running Unity Editor instance
+      "name": "Attach to Unity Editor",
+      "type": "unity",
+      "request": "attach",
+      "logFile": true
+    },
+    {
+      // Attach to a Unity Player build (standalone, mobile, etc.)
+      "name": "Attach to Unity Player",
+      "type": "unity",
+      "request": "attach",
+      "address": "localhost",
+      "port": 56000,
+      "logFile": true
+    }
+  ]
+}

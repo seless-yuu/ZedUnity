@@ -1,0 +1,32 @@
+{
+  // C# language server: OmniSharp (configured for Unity)
+  // This file is a TEMPLATE – copy it to your Unity project root's .zed/ directory.
+  "languages": {
+    "C#": {
+      "language_servers": ["omnisharp"],
+      "format_on_save": "off",
+      "tab_size": 4
+    }
+  },
+
+  "lsp": {
+    "omnisharp": {
+      "initialization_options": {
+        "RoslynExtensionsOptions": {
+          "enableDecompilationSupport": false,
+          "enableImportCompletion": true,
+          "enableAnalyzersSupport": false
+        },
+        "FormattingOptions": {
+          "enableEditorConfigSupport": true,
+          "useTabs": false,
+          "tabSize": 4,
+          "indentationSize": 4
+        },
+        "MsBuildOptions": {
+          "loadProjectsOnDemand": false
+        }
+      }
+    }
+  }
+}

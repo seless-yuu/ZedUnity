@@ -1,0 +1,26 @@
+{
+  "name": "com.zedunity.ide.zed",
+  "version": "0.1.0",
+  "displayName": "Zed Editor",
+  "description": "Zed Editor integration for Unity - enables Zed as the external script editor with full IntelliSense support via OmniSharp.",
+  "unity": "2020.3",
+  "keywords": [
+    "zed",
+    "editor",
+    "ide",
+    "integration",
+    "omnisharp"
+  ],
+  "author": {
+    "name": "seless"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seless/ZedUnity"
+  },
+  "dependencies": {
+    "com.unity.code-editor": "1.2.1"
+  },
+  "type": "tool"
+}
