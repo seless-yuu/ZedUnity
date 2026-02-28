@@ -167,11 +167,7 @@ namespace ZedUnity.Editor
             {
                 EditorGUILayout.LabelField("Project Files", GUILayout.Width(120));
                 if (GUILayout.Button("Regenerate .csproj / .sln", GUILayout.Width(200)))
-                {
                     SyncAll();
-                    EditorUtility.DisplayDialog("Zed Editor",
-                        "Project files regenerated.\nOpen the project in Zed to apply changes.", "OK");
-                }
             }
 
             EditorGUILayout.Space(4);

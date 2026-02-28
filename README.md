@@ -6,6 +6,15 @@ Zed Editor の Unity 統合。Unity で Zed を外部スクリプトエディタ
 
 ### 1. Unity パッケージをインストール
 
+**Git URL（推奨）:**
+
+Package Manager → `+` → "Add package from git URL..." に以下を入力：
+```
+https://github.com/seless-yuu/ZedUnity.git?path=/unity-package
+```
+
+**ローカルから追加:**
+
 Package Manager → `+` → "Add package from disk..." → `unity-package/package.json`
 
 ### 2. Zed を外部エディタに設定
