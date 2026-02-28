@@ -26,7 +26,7 @@ ZedUnity は2つのコンポーネントで構成されています：
 
 Package Manager → `+` → **"Add package from git URL..."** に以下を入力：
 ```
-https://github.com/seless/ZedUnity.git?path=/unity-package
+https://github.com/seless-yuu/ZedUnity.git?path=/unity-package
 ```
 
 ### 1-2. Zed を外部エディタとして設定
