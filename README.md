@@ -1,33 +1,39 @@
 # ZedUnity
 
-Zed Editor の Unity 統合。Unity で Zed を外部スクリプトエディタとして使用し、OmniSharp による IntelliSense とデバッグを有効にします。
+Unity integration for Zed Editor. Use Zed as your external script editor with IntelliSense powered by OmniSharp.
 
-## クイックスタート
+[日本語](README.ja.md)
 
-### 1. Unity パッケージをインストール
+## Quick Start
 
-**Git URL（推奨）:**
+### 1. Install the Unity package
 
-Package Manager → `+` → "Add package from git URL..." に以下を入力：
+**Via Git URL (recommended):**
+
+Package Manager → `+` → "Add package from git URL..." and enter:
 ```
 https://github.com/seless-yuu/ZedUnity.git?path=/unity-package
 ```
 
-**ローカルから追加:**
+**Via local disk:**
 
 Package Manager → `+` → "Add package from disk..." → `unity-package/package.json`
 
-### 2. Zed を外部エディタに設定
+### 2. Set Zed as the external editor
 
 `Edit → Preferences → External Tools` → External Script Editor: **Zed**
 
-### 3. プロジェクトファイルを生成
+### 3. Generate project files
 
-同じ Preferences 画面で **"Regenerate .csproj / .sln"** をクリック。
-これにより `.zed/settings.json` と `omnisharp.json` も自動生成されます。
+Click **"Regenerate .csproj / .sln"** in the same Preferences panel.
+This also auto-generates `.zed/settings.json` and `omnisharp.json`.
 
-## 必要環境
+## Requirements
 
-- Unity 2020.3 以上
-- Zed Editor（[zed.dev](https://zed.dev)）
-- OmniSharp（`dotnet tool install -g omnisharp`）
+- Unity 2020.3 or later
+- Zed Editor ([zed.dev](https://zed.dev))
+- OmniSharp (`dotnet tool install -g omnisharp`)
+
+## License
+
+MIT
