@@ -1,0 +1,185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 23
+  productGUID: 00000000000000000000000000000000
+  AndroidProfiler: 0
+  AndroidFilterTouchesWhenObscured: 0
+  AndroidEnableSustainedPerformanceMode: 0
+  defaultScreenOrientation: 4
+  targetDevice: 2
+  useOnDemandResources: 0
+  accelerometerFrequency: 60
+  companyName: seless
+  productName: ZedUnity
+  defaultCursor: {fileID: 0}
+  cursorHotspot: {x: 0, y: 0}
+  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_ShowUnitySplashScreen: 1
+  m_ShowUnitySplashLogo: 1
+  m_SplashScreenOverlayOpacity: 1
+  m_SplashScreenAnimation: 1
+  m_SplashScreenLogoStyle: 1
+  m_SplashScreenDrawMode: 0
+  m_SplashScreenBackgroundAnimationZoom: 1
+  m_SplashScreenLogoAnimationZoom: 1
+  m_SplashScreenBackgroundLandscapeAspect: 1
+  m_SplashScreenBackgroundPortraitAspect: 1
+  m_SplashScreenBackgroundLandscapeUvs:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_SplashScreenBackgroundPortraitUvs:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_SplashScreenLogos: []
+  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_HolographicTrackingLossScreen: {fileID: 0}
+  defaultScreenWidth: 1920
+  defaultScreenHeight: 1080
+  defaultScreenWidthWeb: 960
+  defaultScreenHeightWeb: 600
+  m_StereoRenderingPath: 0
+  m_ActiveColorSpace: 0
+  m_MTRendering: 1
+  mipStripping: 0
+  numberOfMipsStripped: 0
+  stackTraceTypes:
+    serializedVersion: 2
+    m_TreatErrorAsException: 1
+    m_TreatWarningAsException: 0
+    m_TreatLogAsException: 0
+  m_TargetGlesGraphics: 1
+  m_RequireES31: 0
+  m_RequireES31AEP: 0
+  m_RequireES32: 0
+  m_LightmapMode: 1
+  m_FogMode: 3
+  useDirect3D: 0
+  m_ColorGamuts: 00000000
+  m_TargetPixelDensity: 30
+  m_ResolutionScalingMode: 0
+  m_ResetResolutionOnWindowResize: 0
+  m_AndroidSupportedAspectRatio: 1
+  m_AndroidMaxAspectRatio: 2.1
+  m_ApplicationBundleVersion: 0.1
+  m_BuildTargetBundleVersions: {}
+  m_iPhoneApplicationDisplayName: ZedUnity
+  m_LocationUsageDescription:
+  m_CameraUsageDescription:
+  m_MicrophoneUsageDescription:
+  m_BluetoothUsageDescription:
+  m_NeedSubmitForIOSAppStore: 0
+  iPhoneSdkVersion: 988
+  iOSTargetOSVersionString: 12.0
+  tvOSSdkVersion: 0
+  tvOSRequireExtendedGameController: 0
+  tvOSTargetOSVersionString: 12.0
+  uIPrerenderedIcon: 0
+  uIRequiresPersistentWiFi: 0
+  uIRequiresFullScreen: 1
+  uIStatusBarHidden: 1
+  uIExitOnSuspend: 0
+  uIStatusBarStyle: 0
+  m_iPhoneSupportedOrientations: 15
+  m_iPhoneAdvertisingNetwork: 0
+  m_iOSNoOtherOrientations: 0
+  m_iOSUseOpaqueStatusBar: 0
+  m_iOSAllowHTTP: 0
+  targetDevice: 2
+  m_MacRetinaSupport: 1
+  runInBackground: 1
+  captureSingleScreen: 0
+  muteOtherAudioSources: 0
+  Prepare IOS For Recording: 0
+  Force IOS Speakers When Recording: 0
+  deferSystemGesturesMode: 0
+  hideHomeButton: 0
+  submitAnalytics: 1
+  useAnimatedAutorotation: 1
+  m_DefaultIsNativeResolution: 1
+  m_MacFullscreenMode: 2
+  m_DedicatedServerOptimizations: 0
+  m_D3DHDRBitDepth: 0
+  m_Win32HDROutputType: 0
+  xboxSpeechDB: 0
+  xboxEnableHeadOrientation: 0
+  xboxEnableGuest: 0
+  xboxEnableKinect: 0
+  xboxEnableKinectAutoTracking: 0
+  xboxEnableFitnessCounting: 0
+  xboxOneResolution: 0
+  xboxOneSResolution: 0
+  xboxOneXResolution: 3
+  xboxOneMonoLoggingLevel: 0
+  xboxOneLoggingLevel: 1
+  xboxOneDisableEsram: 0
+  xboxOnePresentImmediateThreshold: 0
+  switchQueueCommandMemory: 0
+  switchQueueControlMemory: 16384
+  switchQueueComputeMemory: 8
+  switchNVNShaderPoolsGranularity: 33554432
+  switchNVNDefaultPoolsGranularity: 16777216
+  switchNVNOtherPoolsGranularity: 16777216
+  switchGpuScratchPoolGranularity: 2097152
+  switchAllowGpuScratchShrinking: 0
+  switchNVNMaxPublicTextureIDCount: 0
+  switchNVNMaxPublicSamplerIDCount: 0
+  stadiaPresentMode: 0
+  stadiaTargetFramerate: 0
+  vulkanNumSwapchainBuffers: 3
+  vulkanEnableSetSRGBWrite: 0
+  vulkanEnablePreTransform: 0
+  vulkanEnableLateAcquireNextImage: 0
+  vulkanEnableCommandBufferRecycling: 1
+  m_DefaultScreenWidth: 1920
+  m_DefaultScreenHeight: 1080
+  m_DefaultScreenWidthWeb: 960
+  m_DefaultScreenHeightWeb: 600
+  m_StereoRenderingPath: 0
+  m_ActiveColorSpace: 0
+  m_MTRendering: 1
+  m_ApiCompatibilityLevel: 6
+  m_BuildTargetApiCompatibilityLevel:
+    Standalone: 6
+  m_DefaultShaderChunkSizeInMB: 16
+  m_DefaultShaderChunkCount: 0
+  playModeTestRunnerEnabled: 0
+  maximizePlayModeWindow: 0
+  m_RunPlayModeTestAsEditModeTest: 0
+  m_MTRendering: 1
+  m_MobileRenderingPath: 1
+  m_RenderingPath: 1
+  m_MobileColorSpace: 0
+  m_FramebufferDepthMemorylessMode: 0
+  m_VulkanEditorMultithreadedRendering: 0
+  m_MetalEditorSupport: 1
+  m_MetalAPIValidation: 1
+  m_MetalFramebufferOnly: 0
+  m_MetalDontCareAction: 0
+  m_FrameTimingStats: 0
+  m_OpenGLRequireES31: 0
+  m_OpenGLRequireES31AEP: 0
+  m_OpenGLRequireES32: 0
+  m_WiiUDrcBufferDisabled: 0
+  m_WiiUProfilerLibPath:
+  scriptingDefineSymbols: {}
+  m_AdditionalCompilerArguments: {}
+  platformArchitecture: {}
+  m_RenderingPath: 1
+  m_MobileRenderingPath: 1
+  m_ActiveColorSpace: 0
+  m_MTRendering: 1
+  m_ApplicationBundleVersion: 0.1
+  m_ProductName: ZedUnity
+  m_CompanyName: seless
+  m_CursorHotspot: {x: 0, y: 0}
+  m_DefaultCursor: {fileID: 0}
+  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
