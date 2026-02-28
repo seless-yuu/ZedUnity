@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2] - 2026-03-01
+
+### Changed
+- Minimum Unity version lowered from 6000.3 to 2020.3
+- Removed confirmation dialog after "Regenerate .csproj / .sln"
+
+### Fixed
+- Git URL in documentation corrected to `seless-yuu/ZedUnity`
+
 ## [0.1.1] - 2026-03-01
 
 ### Fixed
