@@ -55,10 +55,6 @@ Zed の C# サポートは OmniSharp（または Roslyn）を使用します。
 dotnet tool install -g omnisharp
 ```
 
-**手動インストール:**
-[OmniSharp リリースページ](https://github.com/OmniSharp/omnisharp-roslyn/releases) から
-プラットフォームに合うバイナリをダウンロードし、PATH の通った場所に配置。
-
 ### 2-2. Zed の設定
 
 `unity-package` を使って「Regenerate .csproj / .sln」を実行すると、自動で以下が生成されます：
@@ -89,61 +85,6 @@ dotnet tool install -g omnisharp
 
 ---
 
-## Part 3: デバッグ設定
-
-Unity のデバッグには **DAP（Debug Adapter Protocol）** を使用します。
-
-### 3-1. Unity Debug Adapter のインストール
-
-1. [vscode-unity-debug releases](https://github.com/Unity-Technologies/vscode-unity-debug/releases) から
-   最新の `.vsix` ファイルをダウンロード
-2. `.vsix` は ZIP 形式なので、拡張子を `.zip` に変更して展開
-3. 展開先の `extension/` ディレクトリ（アダプター本体）を任意の場所に配置
-   （例: `~/.local/share/unity-debug/`）
-
-> **注意**: `npm install -g unity-debug` というパッケージは存在しません。
-> VS Code を使用している場合は、マーケットプレイスから `Unity.unity-debug` 拡張をインストールすると
-> 自動的に `~/.vscode/extensions/` 以下に展開されます。
-
-### 3-2. Unity 側の設定
-
-`Edit → Preferences → External Tools` で **"Editor Attaching"** にチェックを入れる。
-
-### 3-3. launch.json の配置
-
-`ZedUnity/.vscode/launch.json` をUnity プロジェクトルートの `.vscode/` にコピー：
-
-```bash
-cp ZedUnity/.vscode/launch.json <UnityProjectRoot>/.vscode/launch.json
-```
-
-Zed はフォールバックとして `.vscode/launch.json` を読み込みます。
-
-### 3-4. デバッグの開始
-
-1. Unity Editor でゲームを **Play** モードで実行
-2. Zed で `F4` (または `debugger: start`) → **"Attach to Unity Editor"** を選択
-3. ブレークポイントが機能することを確認
-
-### デバッグ設定の詳細
-
-```json
-{
-  "name": "Attach to Unity Editor",
-  "type": "unity",
-  "request": "attach"
-}
-```
-
-| フィールド | 説明 |
-|---|---|
-| `type: "unity"` | Unity Debug Adapter を使用 |
-| `request: "attach"` | 実行中の Unity プロセスにアタッチ |
-| `address` | デフォルト: `localhost`（リモートデバッグ時に変更） |
-| `port` | デフォルト: 自動検出（手動指定: `56000`） |
-
----
-
 ## Zed 拡張機能（オプション）
 
 `zed-extension/` ディレクトリに OmniSharp を Unity 向けに設定する Zed 拡張があります。
@@ -166,5 +107,4 @@ Zed: `zed: install dev extension` → `zed-extension/` ディレクトリを指�
 |---|---|
 | Zed がドロップダウンに表示されない | `Edit → Preferences → External Tools → Browse...` で手動指定 |
 | IntelliSense が効かない | 「Regenerate .csproj / .sln」を再実行、OmniSharp を再起動 |
-| ブレークポイントが機能しない | Unity の "Editor Attaching" が有効か確認、vscode-unity-debug アダプターのインストールを確認 |
 | `omnisharp` が見つからない | `dotnet tool install -g omnisharp` を実行し、PATH を確認 |
