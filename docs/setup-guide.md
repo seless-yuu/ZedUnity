@@ -2,12 +2,8 @@
 
 ## 概要
 
-ZedUnity は2つのコンポーネントで構成されています：
-
-| コンポーネント | 役割 |
-|---|---|
-| `unity-package/` | Unity Editor から Zed を外部エディタとして登録する Unity パッケージ |
-| `zed-extension/` | OmniSharp LSP を Unity プロジェクト向けに設定する Zed 拡張機能 |
+ZedUnity は Unity パッケージ（`unity-package/`）として提供されます。
+Unity Editor から Zed を外部エディタとして登録し、.csproj / .sln および OmniSharp 設定を自動生成します。
 
 ---
 
@@ -82,22 +78,6 @@ dotnet tool install -g omnisharp
   }
 }
 ```
-
----
-
-## Zed 拡張機能（オプション）
-
-`zed-extension/` ディレクトリに OmniSharp を Unity 向けに設定する Zed 拡張があります。
-Rust/Cargo が必要です：
-
-```bash
-cd zed-extension
-rustup target add wasm32-wasip1
-cargo build --release --target wasm32-wasip1
-```
-
-ビルドした拡張は Zed の開発モードでロード可能：
-Zed: `zed: install dev extension` → `zed-extension/` ディレクトリを指定
 
 ---
 
