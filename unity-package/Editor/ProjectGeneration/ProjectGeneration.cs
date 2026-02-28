@@ -58,7 +58,7 @@ namespace ZedUnity.Editor.ProjectGeneration
         /// </summary>
         public void GenerateAll()
         {
-            var assemblies = CompilationPipeline.GetAssemblies(AssembliesType.PlayerWithEditor);
+            var assemblies = CompilationPipeline.GetAssemblies(AssembliesType.Editor);
             var projectFiles = new List<(string name, string guid, string path)>();
 
             foreach (var assembly in assemblies)
@@ -287,6 +287,10 @@ namespace ZedUnity.Editor.ProjectGeneration
         {
             if (!basePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 basePath += Path.DirectorySeparatorChar;
+
+            // Unity may return relative paths; resolve them against the project directory
+            if (!Path.IsPathRooted(fullPath))
+                fullPath = Path.GetFullPath(fullPath);
 
             var baseUri = new Uri(basePath);
             var fullUri = new Uri(fullPath);
