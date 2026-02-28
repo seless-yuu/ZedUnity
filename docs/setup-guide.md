@@ -95,13 +95,15 @@ Unity のデバッグには **DAP（Debug Adapter Protocol）** を使用しま�
 
 ### 3-1. Unity Debug Adapter のインストール
 
-```bash
-# Node.js が必要
-npm install -g unity-debug
-```
+1. [vscode-unity-debug releases](https://github.com/Unity-Technologies/vscode-unity-debug/releases) から
+   最新の `.vsix` ファイルをダウンロード
+2. `.vsix` は ZIP 形式なので、拡張子を `.zip` に変更して展開
+3. 展開先の `extension/` ディレクトリ（アダプター本体）を任意の場所に配置
+   （例: `~/.local/share/unity-debug/`）
 
-または [vscode-unity-debug releases](https://github.com/Unity-Technologies/vscode-unity-debug/releases) から
-手動ダウンロード。
+> **注意**: `npm install -g unity-debug` というパッケージは存在しません。
+> VS Code を使用している場合は、マーケットプレイスから `Unity.unity-debug` 拡張をインストールすると
+> 自動的に `~/.vscode/extensions/` 以下に展開されます。
 
 ### 3-2. Unity 側の設定
 
@@ -164,5 +166,5 @@ Zed: `zed: install dev extension` → `zed-extension/` ディレクトリを指�
 |---|---|
 | Zed がドロップダウンに表示されない | `Edit → Preferences → External Tools → Browse...` で手動指定 |
 | IntelliSense が効かない | 「Regenerate .csproj / .sln」を再実行、OmniSharp を再起動 |
-| ブレークポイントが機能しない | Unity の "Editor Attaching" が有効か確認、unity-debug アダプターのインストールを確認 |
+| ブレークポイントが機能しない | Unity の "Editor Attaching" が有効か確認、vscode-unity-debug アダプターのインストールを確認 |
 | `omnisharp` が見つからない | `dotnet tool install -g omnisharp` を実行し、PATH を確認 |

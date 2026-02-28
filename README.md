@@ -38,16 +38,12 @@ Package Manager → `+` → "Add package from disk..." → `unity-package/packag
 
 ### 4. デバッグ（オプション）
 
-```bash
-npm install -g unity-debug
-```
-
-詳細は [docs/setup-guide.md](docs/setup-guide.md) を参照してください。
+Unity のデバッグには [vscode-unity-debug](https://github.com/Unity-Technologies/vscode-unity-debug/releases)
+DAP アダプターが必要です。詳細は [docs/setup-guide.md](docs/setup-guide.md) を参照してください。
 
 ## 必要環境
 
-- Unity 2020.3 以上
-- `com.unity.code-editor` 1.2.1 以上
+- Unity 6 (6000.3) 以上
 - Zed Editor（[zed.dev](https://zed.dev)）
 - OmniSharp（`dotnet tool install -g omnisharp`）
 

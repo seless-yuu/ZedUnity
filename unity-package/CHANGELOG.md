@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1] - 2026-03-01
+
+### Fixed
+- Restored `IExternalCodeEditor` implementation (Zed now appears in External Tools dropdown)
+- `AssembliesType.PlayerWithEditor` → `AssembliesType.Editor` (removed in Unity 6)
+- Resolved `Debug` ambiguity between `System.Diagnostics.Debug` and `UnityEngine.Debug`
+- `MakeRelativePath`: resolve relative source file paths before `Uri` conversion to avoid `UriFormatException`
+
 ## [0.1.0] - 2026-02-27
 
 ### Added

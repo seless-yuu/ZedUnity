@@ -3,12 +3,11 @@
   // Copy it to your Unity project root's .vscode/ directory (or .zed/ for Zed-native config).
   //
   // Prerequisites (Unity debugging):
-  //   1. Install the unity-debug DAP adapter:
-  //        npm install -g unity-debug
-  //      OR download from:
+  //   1. Download the unity-debug DAP adapter from:
   //        https://github.com/Unity-Technologies/vscode-unity-debug/releases
-  //   2. Set UNITY_DEBUG_ADAPTER_PATH in your environment if the adapter is not on PATH.
-  //   3. In Unity: Edit → Preferences → External Tools → check "Editor Attaching"
+  //      Download the .vsix file, extract it as a ZIP, and place the extension/ directory
+  //      in a known location (e.g. ~/.local/share/unity-debug/).
+  //   2. In Unity: Edit → Preferences → External Tools → check "Editor Attaching"
   //
   // See docs/setup-guide.md for full instructions.
   "version": "0.2.0",
