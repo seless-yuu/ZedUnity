@@ -33,7 +33,3 @@ This also auto-generates `.zed/settings.json` and `omnisharp.json`.
 - Unity 2020.3 or later
 - Zed Editor ([zed.dev](https://zed.dev))
 - OmniSharp (`dotnet tool install -g omnisharp`)
-
-## License
-
-MIT
