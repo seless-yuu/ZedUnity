@@ -28,6 +28,6 @@ Package Manager → `+` → "Add package from disk..." → `unity-package/packag
 
 ## 必要環境
 
-- Unity 6 (6000.3) 以上
+- Unity 2020.3 以上
 - Zed Editor（[zed.dev](https://zed.dev)）
 - OmniSharp（`dotnet tool install -g omnisharp`）

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "displayName": "Zed Editor",
   "description": "Zed Editor integration for Unity - enables Zed as the external script editor with full IntelliSense support via OmniSharp.",
-  "unity": "6000.3",
+  "unity": "2020.3",
   "keywords": [
     "zed",
     "editor",
