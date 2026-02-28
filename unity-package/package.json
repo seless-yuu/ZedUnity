@@ -19,8 +19,6 @@
     "type": "git",
     "url": "https://github.com/seless/ZedUnity"
   },
-  "dependencies": {
-    "com.unity.code-editor": "1.2.1"
-  },
+  "dependencies": {},
   "type": "tool"
 }

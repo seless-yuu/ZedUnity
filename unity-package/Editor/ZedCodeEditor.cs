@@ -3,230 +3,133 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Unity.CodeEditor;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ZedUnity.Editor
 {
     /// <summary>
-    /// Registers Zed Editor as an external code editor in Unity.
-    /// Implements <see cref="IExternalCodeEditor"/> from com.unity.code-editor.
+    /// Integrates Zed Editor with Unity 6.
+    ///
+    /// Since com.unity.code-editor was removed in Unity 6, this implementation:
+    ///   - Uses [OnOpenAsset] to intercept C# file opens and forward them to Zed
+    ///   - Provides a Preferences page at "Preferences / Zed Editor"
+    ///   - Adds menu items under "Tools / Zed Editor"
     /// </summary>
     [InitializeOnLoad]
-    public sealed class ZedCodeEditor : IExternalCodeEditor
+    public static class ZedCodeEditor
     {
         // -----------------------------------------------------------------------
-        // Registration
+        // EditorPrefs keys
+        // -----------------------------------------------------------------------
+
+        internal const string k_EnabledKey = "ZedUnity.Enabled";
+        internal const string k_EditorPathKey = "ZedUnity.EditorPath";
+
+        // -----------------------------------------------------------------------
+        // Initialization
         // -----------------------------------------------------------------------
 
         static ZedCodeEditor()
         {
-            var editor = new ZedCodeEditor();
-            CodeEditor.Register(editor);
-        }
-
-        // -----------------------------------------------------------------------
-        // IExternalCodeEditor – Installations
-        // -----------------------------------------------------------------------
-
-        public CodeEditor.Installation[] Installations
-        {
-            get
+            // Auto-detect Zed on first load if no path is configured yet
+            if (string.IsNullOrEmpty(EditorPrefs.GetString(k_EditorPathKey)))
             {
-                var list = new List<CodeEditor.Installation>();
-                foreach (var path in ZedDiscovery.GetInstallationPaths())
-                {
-                    list.Add(new CodeEditor.Installation
-                    {
-                        Name = ZedDiscovery.EditorName,
-                        Path = path
-                    });
-                }
-                return list.ToArray();
+                var detected = ZedDiscovery.GetInstallationPaths().FirstOrDefault();
+                if (!string.IsNullOrEmpty(detected))
+                    EditorPrefs.SetString(k_EditorPathKey, detected);
             }
         }
 
-        /// <summary>
-        /// Returns true and populates <paramref name="installation"/> when <paramref name="editorPath"/>
-        /// points to a Zed executable.
-        /// </summary>
-        public bool TryGetInstallationForPath(string editorPath,
-            out CodeEditor.Installation installation)
+        // -----------------------------------------------------------------------
+        // [OnOpenAsset] – intercept C# / shader file opens
+        // -----------------------------------------------------------------------
+
+        [OnOpenAsset]
+        public static bool OnOpenAsset(int instanceID, int line, int column)
         {
-            installation = default;
-            if (!ZedDiscovery.IsZedPath(editorPath))
+            if (!EditorPrefs.GetBool(k_EnabledKey, false))
                 return false;
 
-            installation = new CodeEditor.Installation
-            {
-                Name = ZedDiscovery.EditorName,
-                Path = editorPath
-            };
-            return true;
-        }
+            var assetPath = AssetDatabase.GetAssetPath(instanceID);
+            if (!IsTextAsset(assetPath))
+                return false;
 
-        // -----------------------------------------------------------------------
-        // IExternalCodeEditor – Lifecycle
-        // -----------------------------------------------------------------------
-
-        private string _editorPath;
-        private ProjectGeneration.ProjectGeneration _projectGeneration;
-
-        public void Initialize(string editorInstallationPath)
-        {
-            _editorPath = editorInstallationPath;
-            _projectGeneration = new ProjectGeneration.ProjectGeneration(
-                Directory.GetParent(Application.dataPath).FullName);
-        }
-
-        // -----------------------------------------------------------------------
-        // IExternalCodeEditor – Open
-        // -----------------------------------------------------------------------
-
-        /// <summary>
-        /// Opens the Unity project (or a specific file) in Zed.
-        /// Returns false if Zed could not be launched.
-        /// </summary>
-        public bool OpenProject(string filePath = "", int line = -1, int column = -1)
-        {
-            var editorPath = ResolveEditorPath();
+            var editorPath = EditorPrefs.GetString(k_EditorPathKey);
             if (string.IsNullOrEmpty(editorPath))
             {
-                UnityEngine.Debug.LogError("[ZedUnity] Could not find Zed executable. " +
-                    "Make sure Zed is installed and set as the external script editor in Preferences.");
+                UnityEngine.Debug.LogWarning(
+                    "[ZedUnity] Zed path is not configured. " +
+                    "Open Preferences → Zed Editor to set it.");
                 return false;
             }
 
-            string args;
-            if (string.IsNullOrEmpty(filePath))
-            {
-                // Open project root as a workspace
-                var projectRoot = Directory.GetParent(Application.dataPath).FullName;
-                args = ZedDiscovery.BuildOpenProjectArgs(projectRoot);
-            }
-            else
-            {
-                args = ZedDiscovery.BuildOpenFileArgs(filePath, line, column);
-
-                // Also pass the project root so Zed opens the file in the right workspace
-                var projectRoot = Directory.GetParent(Application.dataPath).FullName;
-                args = $"{ZedDiscovery.BuildOpenProjectArgs(projectRoot)} {args}";
-            }
-
+            var fullPath = Path.GetFullPath(assetPath);
+            var args = BuildArgs(fullPath, line, column);
             return Launch(editorPath, args);
         }
 
-        // -----------------------------------------------------------------------
-        // IExternalCodeEditor – Project sync
-        // -----------------------------------------------------------------------
-
-        public void SyncAll()
+        private static bool IsTextAsset(string path)
         {
-            EnsureProjectGeneration();
-            _projectGeneration.GenerateAll();
-            AssetDatabase.Refresh();
-        }
-
-        public void SyncIfNeeded(
-            string[] addedFiles,
-            string[] deletedFiles,
-            string[] movedFiles,
-            string[] movedFromFiles,
-            string[] importedFiles)
-        {
-            EnsureProjectGeneration();
-
-            var affectedFiles = addedFiles
-                .Concat(deletedFiles)
-                .Concat(movedFiles)
-                .Concat(movedFromFiles)
-                .Concat(importedFiles);
-
-            // Only regenerate when script or assembly-definition assets change
-            bool needsSync = affectedFiles.Any(f =>
-                f.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
-                f.EndsWith(".asmdef", StringComparison.OrdinalIgnoreCase) ||
-                f.EndsWith(".asmref", StringComparison.OrdinalIgnoreCase));
-
-            if (needsSync)
-                _projectGeneration.GenerateAll();
+            if (string.IsNullOrEmpty(path)) return false;
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return ext is ".cs" or ".shader" or ".hlsl" or ".cginc" or ".glsl"
+                      or ".asmdef" or ".asmref" or ".json" or ".xml";
         }
 
         // -----------------------------------------------------------------------
-        // IExternalCodeEditor – GUI (Preferences panel)
+        // Menu items
         // -----------------------------------------------------------------------
 
-        public void OnGUI()
+        [MenuItem("Tools/Zed Editor/Open Project in Zed")]
+        public static void OpenProjectInZed()
         {
-            EditorGUILayout.LabelField("Zed Editor Settings", EditorStyles.boldLabel);
-
-            EditorGUILayout.Space(4);
-
-            using (new EditorGUILayout.HorizontalScope())
+            var editorPath = EditorPrefs.GetString(k_EditorPathKey);
+            if (string.IsNullOrEmpty(editorPath))
             {
-                EditorGUILayout.LabelField("Project Files", GUILayout.Width(120));
-                if (GUILayout.Button("Regenerate .csproj / .sln", GUILayout.Width(200)))
-                {
-                    SyncAll();
-                    EditorUtility.DisplayDialog("Zed Editor",
-                        "Project files regenerated.\nOpen the project in Zed to apply changes.", "OK");
-                }
+                EditorUtility.DisplayDialog("Zed Editor",
+                    "Zed path is not configured.\nOpen Preferences → Zed Editor.", "OK");
+                return;
             }
 
-            EditorGUILayout.Space(4);
+            var projectRoot = Path.GetDirectoryName(Application.dataPath);
+            Launch(editorPath, Quote(projectRoot));
+        }
 
-            var projectRoot = Directory.GetParent(Application.dataPath).FullName;
-            EditorGUILayout.LabelField("Project Root", projectRoot, EditorStyles.miniLabel);
-
-            EditorGUILayout.Space(4);
-
-            EditorGUILayout.HelpBox(
-                "OmniSharp language server configuration is written to .zed/settings.json " +
-                "in the project root on first sync.\n\n" +
-                "For debugging: install the 'unity-debug' DAP adapter and see docs/setup-guide.md.",
-                MessageType.Info);
+        [MenuItem("Tools/Zed Editor/Regenerate Project Files")]
+        public static void RegenerateProjectFiles()
+        {
+            var projectRoot = Path.GetDirectoryName(Application.dataPath);
+            var gen = new ProjectGeneration.ProjectGeneration(projectRoot);
+            gen.GenerateAll();
+            EditorUtility.DisplayDialog("Zed Editor",
+                "Project files regenerated.\nReopen the project in Zed to apply changes.", "OK");
         }
 
         // -----------------------------------------------------------------------
-        // Private helpers
+        // Internal helpers
         // -----------------------------------------------------------------------
 
-        private string ResolveEditorPath()
+        private static string BuildArgs(string filePath, int line, int column)
         {
-            // Prefer explicitly initialized path
-            if (!string.IsNullOrEmpty(_editorPath))
-                return _editorPath;
-
-            // Fall back to Unity's current editor path setting
-            var currentPath = CodeEditor.CurrentEditorPath;
-            if (!string.IsNullOrEmpty(currentPath) && ZedDiscovery.IsZedPath(currentPath))
-                return currentPath;
-
-            // Try auto-discovery
-            return ZedDiscovery.GetInstallationPaths().FirstOrDefault();
+            // Zed CLI: zed <project_root> <path>:<line>:<col>
+            var projectRoot = Path.GetDirectoryName(Application.dataPath);
+            var fileArg = ZedDiscovery.BuildOpenFileArgs(filePath, line, column);
+            return $"{Quote(projectRoot)} {fileArg}";
         }
 
-        private void EnsureProjectGeneration()
-        {
-            if (_projectGeneration == null)
-            {
-                _projectGeneration = new ProjectGeneration.ProjectGeneration(
-                    Directory.GetParent(Application.dataPath).FullName);
-            }
-        }
-
-        private static bool Launch(string executable, string args)
+        internal static bool Launch(string executable, string args)
         {
             try
             {
-                var psi = new ProcessStartInfo
+                Process.Start(new ProcessStartInfo
                 {
                     FileName = executable,
                     Arguments = args,
                     UseShellExecute = true,
-                };
-                Process.Start(psi);
+                });
                 return true;
             }
             catch (Exception ex)
@@ -234,6 +137,103 @@ namespace ZedUnity.Editor
                 UnityEngine.Debug.LogError($"[ZedUnity] Failed to launch Zed: {ex.Message}");
                 return false;
             }
+        }
+
+        private static string Quote(string value) =>
+            value.Contains(' ') ? $"\"{value}\"" : value;
+    }
+
+    // -----------------------------------------------------------------------
+    // Preferences page
+    // -----------------------------------------------------------------------
+
+    internal static class ZedEditorSettings
+    {
+        [SettingsProvider]
+        public static SettingsProvider CreateProvider()
+        {
+            return new SettingsProvider("Preferences/Zed Editor", SettingsScope.User)
+            {
+                label = "Zed Editor",
+                guiHandler = DrawGUI,
+                keywords = new HashSet<string> { "zed", "editor", "ide", "external" },
+            };
+        }
+
+        private static void DrawGUI(string searchContext)
+        {
+            var enabled = EditorPrefs.GetBool(ZedCodeEditor.k_EnabledKey, false);
+            var editorPath = EditorPrefs.GetString(ZedCodeEditor.k_EditorPathKey, string.Empty);
+
+            EditorGUILayout.Space(4);
+
+            // --- Enable toggle ---
+            var newEnabled = EditorGUILayout.Toggle("Use Zed as Script Editor", enabled);
+            if (newEnabled != enabled)
+                EditorPrefs.SetBool(ZedCodeEditor.k_EnabledKey, newEnabled);
+
+            EditorGUILayout.Space(8);
+
+            // --- Path field ---
+            EditorGUI.BeginDisabledGroup(!newEnabled);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel("Zed Executable Path");
+                var newPath = EditorGUILayout.TextField(editorPath);
+                if (newPath != editorPath)
+                    EditorPrefs.SetString(ZedCodeEditor.k_EditorPathKey, newPath);
+
+                if (GUILayout.Button("Browse…", GUILayout.Width(70)))
+                {
+                    var picked = EditorUtility.OpenFilePanel("Select Zed executable", "", "exe");
+                    if (!string.IsNullOrEmpty(picked))
+                        EditorPrefs.SetString(ZedCodeEditor.k_EditorPathKey, picked);
+                }
+            }
+
+            // --- Auto-detect ---
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Auto-Detect", GUILayout.Width(100)))
+                {
+                    var detected = ZedDiscovery.GetInstallationPaths().FirstOrDefault();
+                    if (!string.IsNullOrEmpty(detected))
+                    {
+                        EditorPrefs.SetString(ZedCodeEditor.k_EditorPathKey, detected);
+                        UnityEngine.Debug.Log($"[ZedUnity] Detected Zed at: {detected}");
+                    }
+                    else
+                    {
+                        EditorUtility.DisplayDialog("Zed Editor",
+                            "Could not auto-detect Zed. Please set the path manually.", "OK");
+                    }
+                }
+            }
+
+            EditorGUILayout.Space(8);
+
+            // --- Project files ---
+            EditorGUILayout.LabelField("Project Files", EditorStyles.boldLabel);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Regenerate .csproj / .sln", GUILayout.Width(200)))
+                    ZedCodeEditor.RegenerateProjectFiles();
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUILayout.Space(8);
+
+            EditorGUILayout.HelpBox(
+                "When enabled, double-clicking a C# file in Unity opens it in Zed " +
+                "at the correct line.\n\n" +
+                "IntelliSense requires OmniSharp: dotnet tool install -g omnisharp\n" +
+                "For debug support see docs/setup-guide.md.",
+                MessageType.Info);
         }
     }
 }
