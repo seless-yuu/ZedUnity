@@ -141,6 +141,15 @@ namespace ZedUnity.Editor.ProjectGeneration
             }
 
             sb.AppendLine("  </ItemGroup>");
+            // --- Unity Roslyn Analyzer ---
+            var analyzerPath = GetAnalyzerPath();
+            if (analyzerPath != null)
+            {
+                sb.AppendLine("  <ItemGroup>");
+                sb.AppendLine($"    <Analyzer Include=\"{SecurityElement.Escape(analyzerPath)}\" />");
+                sb.AppendLine("  </ItemGroup>");
+            }
+
             sb.AppendLine("  <Import Project=\"$(MSBuildToolsPath)\\Microsoft.CSharp.targets\" />");
             sb.AppendLine("</Project>");
 
@@ -226,6 +235,17 @@ namespace ZedUnity.Editor.ProjectGeneration
         // -----------------------------------------------------------------------
         // Utilities
         // -----------------------------------------------------------------------
+
+        /// <summary>
+        /// Returns the path to the bundled Microsoft.Unity.Analyzers.dll, or null if not found.
+        /// </summary>
+        private static string GetAnalyzerPath()
+        {
+            var pkg = UnityEditor.PackageManager.PackageInfo.FindForAssembly(typeof(ProjectGeneration).Assembly);
+            if (pkg == null) return null;
+            var path = Path.Combine(pkg.resolvedPath, "Analyzers~", "Microsoft.Unity.Analyzers.dll");
+            return File.Exists(path) ? path : null;
+        }
 
         /// <summary>Creates a deterministic GUID from a string name.</summary>
         private static string DeterministicGuid(string name)
