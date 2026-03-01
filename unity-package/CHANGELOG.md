@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-03-02
+
+### Added
+- Bundle `Microsoft.Unity.Analyzers` (v1.26.0, MIT) in `Analyzers~/`
+- Generated `.csproj` files now include `<Analyzer>` reference to suppress false-positive IDE0051 on Unity message methods (Start, Update, Awake, etc.)
+
 ## [0.1.2] - 2026-03-01
 
 ### Changed
