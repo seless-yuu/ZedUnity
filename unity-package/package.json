@@ -17,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/waless/ZedUnity"
+    "url": "https://github.com/waless-seel/ZedUnity"
   },
   "dependencies": {},
   "type": "module"
