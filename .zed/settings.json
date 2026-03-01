@@ -2,8 +2,8 @@
   // C# language server: OmniSharp (configured for Unity)
   // This file is a TEMPLATE – copy it to your Unity project root's .zed/ directory.
   "languages": {
-    "C#": {
-      "language_servers": ["omnisharp"],
+    "CSharp": {
+      "language_servers": ["omnisharp", "!roslyn", "..."],
       "format_on_save": "off",
       "tab_size": 4
     }

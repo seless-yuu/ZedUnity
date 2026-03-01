@@ -62,8 +62,8 @@ dotnet tool install -g omnisharp
 ```json
 {
   "languages": {
-    "C#": {
-      "language_servers": ["omnisharp"],
+    "CSharp": {
+      "language_servers": ["omnisharp", "!roslyn", "..."],
       "format_on_save": "off"
     }
   },
@@ -79,6 +79,9 @@ dotnet tool install -g omnisharp
 }
 ```
 
+> **注意**: Zed の C# 言語名は `"CSharp"` です（`"C#"` ではありません）。
+> `"!roslyn"` は Zed のデフォルト LSP（Roslyn）を無効にし、OmniSharp を優先させます。
+
 ---
 
 ## トラブルシューティング
@@ -86,5 +89,5 @@ dotnet tool install -g omnisharp
 | 問題 | 解決策 |
 |---|---|
 | Zed がドロップダウンに表示されない | `Edit → Preferences → External Tools → Browse...` で手動指定 |
-| IntelliSense が効かない | 「Regenerate .csproj / .sln」を再実行、OmniSharp を再起動 |
+| IntelliSense が効かない | `.zed/settings.json` の言語名が `"CSharp"` になっているか確認、「Regenerate .csproj / .sln」を再実行 |
 | `omnisharp` が見つからない | `dotnet tool install -g omnisharp` を実行し、PATH を確認 |

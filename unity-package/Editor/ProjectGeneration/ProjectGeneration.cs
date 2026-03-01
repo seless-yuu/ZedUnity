@@ -249,8 +249,8 @@ namespace ZedUnity.Editor.ProjectGeneration
 
             var json = @"{
   ""languages"": {
-    ""C#"": {
-      ""language_servers"": [""omnisharp""],
+    ""CSharp"": {
+      ""language_servers"": [""omnisharp"", ""!roslyn"", ""...""],
       ""format_on_save"": ""off""
     }
   },
