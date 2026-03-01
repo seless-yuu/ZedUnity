@@ -12,13 +12,13 @@
     "omnisharp"
   ],
   "author": {
-    "name": "seless"
+    "name": "waless"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seless-yuu/ZedUnity"
+    "url": "https://github.com/waless/ZedUnity"
   },
   "dependencies": {},
-  "type": "tool"
+  "type": "module"
 }
