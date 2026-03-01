@@ -12,7 +12,7 @@ Unity integration for Zed Editor. Use Zed as your external script editor with In
 
 Package Manager → `+` → "Add package from git URL..." and enter:
 ```
-https://github.com/seless-yuu/ZedUnity.git?path=/unity-package
+https://github.com/waless-seel/ZedUnity.git?path=/unity-package
 ```
 
 **Via local disk:**

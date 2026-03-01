@@ -12,7 +12,7 @@ Zed Editor の Unity 統合。Unity で Zed を外部スクリプトエディタ
 
 Package Manager → `+` → "Add package from git URL..." に以下を入力：
 ```
-https://github.com/seless-yuu/ZedUnity.git?path=/unity-package
+https://github.com/waless-seel/ZedUnity.git?path=/unity-package
 ```
 
 **ローカルから追加:**
