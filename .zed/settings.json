@@ -6,7 +6,7 @@
     "CSharp": {
       "language_servers": ["roslyn", "!omnisharp", "..."],
       "format_on_save": "off",
-      "tab_size": 4
-    }
-  }
+      "tab_size": 4,
+    },
+  },
 }
