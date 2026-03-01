@@ -3,7 +3,7 @@
 ## 概要
 
 ZedUnity は Unity パッケージ（`unity-package/`）として提供されます。
-Unity Editor から Zed を外部エディタとして登録し、.csproj / .sln および OmniSharp 設定を自動生成します。
+Unity Editor から Zed を外部エディタとして登録し、.csproj / .sln および Zed ワークスペース設定を自動生成します。
 
 ---
 
@@ -40,47 +40,30 @@ Zed がファイルを正しい行で開けば成功です。
 
 ---
 
-## Part 2: OmniSharp / IntelliSense 設定
+## Part 2: IntelliSense 設定
 
-### 2-1. OmniSharp のインストール
+### 2-1. Roslyn（C# Language Server）
 
-Zed の C# サポートは OmniSharp（または Roslyn）を使用します。
-
-**.NET SDK がある場合（推奨）:**
-```bash
-dotnet tool install -g omnisharp
-```
+Zed の C# サポートには Roslyn を使用します。
+Roslyn は Zed が自動で管理するため、**追加のインストールは不要**です。
 
 ### 2-2. Zed の設定
 
-`unity-package` を使って「Regenerate .csproj / .sln」を実行すると、自動で以下が生成されます：
+「Regenerate .csproj / .sln」を実行すると、`.zed/settings.json` が自動生成されます（既存の場合はスキップ）。
 
-- `<ProjectRoot>/omnisharp.json` — OmniSharp 設定
-- `<ProjectRoot>/.zed/settings.json` — Zed ワークスペース設定
-
-生成された `.zed/settings.json` の内容（カスタマイズ可）：
+生成される `.zed/settings.json`：
 ```json
 {
   "languages": {
     "CSharp": {
-      "language_servers": ["omnisharp", "!roslyn", "..."],
+      "language_servers": ["roslyn", "!omnisharp", "..."],
       "format_on_save": "off"
-    }
-  },
-  "lsp": {
-    "omnisharp": {
-      "initialization_options": {
-        "RoslynExtensionsOptions": {
-          "enableImportCompletion": true
-        }
-      }
     }
   }
 }
 ```
 
 > **注意**: Zed の C# 言語名は `"CSharp"` です（`"C#"` ではありません）。
-> `"!roslyn"` は Zed のデフォルト LSP（Roslyn）を無効にし、OmniSharp を優先させます。
 
 ---
 
@@ -89,5 +72,4 @@ dotnet tool install -g omnisharp
 | 問題 | 解決策 |
 |---|---|
 | Zed がドロップダウンに表示されない | `Edit → Preferences → External Tools → Browse...` で手動指定 |
-| IntelliSense が効かない | `.zed/settings.json` の言語名が `"CSharp"` になっているか確認、「Regenerate .csproj / .sln」を再実行 |
-| `omnisharp` が見つからない | `dotnet tool install -g omnisharp` を実行し、PATH を確認 |
+| IntelliSense が効かない | `.zed/settings.json` の言語名が `"CSharp"`、`language_servers` に `"roslyn"` が含まれているか確認。「Regenerate .csproj / .sln」を再実行 |

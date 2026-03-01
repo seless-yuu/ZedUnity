@@ -22,7 +22,6 @@ namespace ZedUnity.Editor.ProjectGeneration
 
         private const string k_ProjectFileExtension = ".csproj";
         private const string k_SolutionFileExtension = ".sln";
-        private const string k_OmniSharpJson = "omnisharp.json";
         private const string k_ZedSettingsDir = ".zed";
         private const string k_ZedSettingsFile = "settings.json";
 
@@ -68,7 +67,6 @@ namespace ZedUnity.Editor.ProjectGeneration
             }
 
             WriteSolution(projectFiles);
-            WriteOmniSharpJson();
             WriteZedSettings();
 
             Debug.Log($"[ZedUnity] Generated {projectFiles.Count} .csproj file(s), .sln, and Zed settings.");
@@ -196,42 +194,8 @@ namespace ZedUnity.Editor.ProjectGeneration
         }
 
         // -----------------------------------------------------------------------
-        // OmniSharp & Zed configuration
+        // Zed configuration
         // -----------------------------------------------------------------------
-
-        /// <summary>
-        /// Writes omnisharp.json to the project root so OmniSharp resolves Unity assemblies correctly.
-        /// </summary>
-        private void WriteOmniSharpJson()
-        {
-            var path = Path.Combine(_projectDirectory, k_OmniSharpJson);
-
-            // Only write if not present – respect user customizations
-            if (File.Exists(path))
-                return;
-
-            var json = @"{
-  ""RoslynExtensionsOptions"": {
-    ""enableDecompilationSupport"": false,
-    ""enableImportCompletion"": true,
-    ""enableAnalyzersSupport"": true
-  },
-  ""FormattingOptions"": {
-    ""enableEditorConfigSupport"": true,
-    ""useTabs"": false,
-    ""tabSize"": 4,
-    ""indentationSize"": 4
-  },
-  ""MsBuildOptions"": {
-    ""loadProjectsOnDemand"": false
-  },
-  ""Plugins"": {
-    ""locationPaths"": []
-  }
-}
-";
-            File.WriteAllText(path, json, Encoding.UTF8);
-        }
 
         /// <summary>
         /// Writes .zed/settings.json configuring the C# language server for Unity.
@@ -250,18 +214,8 @@ namespace ZedUnity.Editor.ProjectGeneration
             var json = @"{
   ""languages"": {
     ""CSharp"": {
-      ""language_servers"": [""omnisharp"", ""!roslyn"", ""...""],
+      ""language_servers"": [""roslyn"", ""!omnisharp"", ""...""],
       ""format_on_save"": ""off""
-    }
-  },
-  ""lsp"": {
-    ""omnisharp"": {
-      ""initialization_options"": {
-        ""RoslynExtensionsOptions"": {
-          ""enableDecompilationSupport"": false,
-          ""enableImportCompletion"": true
-        }
-      }
     }
   }
 }

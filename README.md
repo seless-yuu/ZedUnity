@@ -1,6 +1,6 @@
 # ZedUnity
 
-Unity integration for Zed Editor. Use Zed as your external script editor with IntelliSense powered by OmniSharp.
+Unity integration for Zed Editor. Use Zed as your external script editor with IntelliSense powered by Roslyn.
 
 [日本語](README.ja.md)
 
@@ -26,10 +26,9 @@ Package Manager → `+` → "Add package from disk..." → `unity-package/packag
 ### 3. Generate project files
 
 Click **"Regenerate .csproj / .sln"** in the same Preferences panel.
-This also auto-generates `.zed/settings.json` and `omnisharp.json`.
+This also auto-generates `.zed/settings.json`.
 
 ## Requirements
 
 - Unity 2020.3 or later
 - Zed Editor ([zed.dev](https://zed.dev))
-- OmniSharp (`dotnet tool install -g omnisharp`)

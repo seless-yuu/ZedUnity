@@ -1,6 +1,6 @@
 # ZedUnity
 
-Zed Editor の Unity 統合。Unity で Zed を外部スクリプトエディタとして使用し、OmniSharp による IntelliSense とデバッグを有効にします。
+Zed Editor の Unity 統合。Unity で Zed を外部スクリプトエディタとして使用し、Roslyn による IntelliSense を有効にします。
 
 [English](README.md)
 
@@ -26,10 +26,9 @@ Package Manager → `+` → "Add package from disk..." → `unity-package/packag
 ### 3. プロジェクトファイルを生成
 
 同じ Preferences 画面で **"Regenerate .csproj / .sln"** をクリック。
-これにより `.zed/settings.json` と `omnisharp.json` も自動生成されます。
+これにより `.zed/settings.json` も自動生成されます。
 
 ## 必要環境
 
 - Unity 2020.3 以上
 - Zed Editor（[zed.dev](https://zed.dev)）
-- OmniSharp（`dotnet tool install -g omnisharp`）
